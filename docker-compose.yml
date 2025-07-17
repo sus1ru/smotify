@@ -1,12 +1,12 @@
 services:
   web:
-    env_file: .env
     build:
       context: .
       dockerfile: Dockerfile
     restart: always
     volumes:
       - .:/code
+    env_file: .env
     depends_on:
       - pgdb
     ports:
