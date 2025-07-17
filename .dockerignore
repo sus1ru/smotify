@@ -1,5 +1,24 @@
-#!/bin/sh
+# Virtual envs
+venv/
+ENV/
 
-python manage.py collectstatic --no-input
-python manage.py migrate --no-input
-python manage.py runserver 0.0.0.0:8000
+# Postgresql
+postgres_data
+./postgres_data
+postgres_data/
+
+#redis
+redis_data
+redis
+
+#Container
+nginx
+frontend_app
+sock
+logs
+static
+media
+redis
+_redis_data
+mongodb_data
+logs
