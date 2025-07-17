@@ -1,0 +1,37 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - .:/code
+    env_file: .env
+    depends_on:
+      - pgdb
+    ports:
+      - 8050:8000
+    entrypoint: sh /code/entrypoint.sh
+    networks:
+      - smotify
+
+  pgdb:
+    image: postgres:16-alpine
+    restart: always
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5462:5432
+    env_file: .env
+    healthcheck:
+      test: [ 'CMD', 'psql', '-U', 'postgres', '-c', 'SELECT 1' ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - smotify
+
+networks:
+  smotify:
+    name: smotify
+    driver: bridge
