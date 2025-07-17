@@ -10,7 +10,7 @@ services:
     depends_on:
       - pgdb
     ports:
-      - 8020:8000
+      - 8050:8000
     entrypoint: sh /code/entrypoint.sh
     networks:
       - smotify
@@ -21,7 +21,7 @@ services:
     volumes:
       - ./postgres_data:/var/lib/postgresql/data/
     ports:
-      - 5452:5432
+      - 5462:5432
     env_file: .env
     healthcheck:
       test: [ 'CMD', 'psql', '-U', 'postgres', '-c', 'SELECT 1' ]
