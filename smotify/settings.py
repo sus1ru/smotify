@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -83,13 +84,18 @@ WSGI_APPLICATION = 'smotify.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('POSTGRES_DB', 'whomidb'),
+        'NAME': os.environ.get('POSTGRES_DB', 'smotifydb'),
         'USER': os.environ.get('POSTGRES_USER', 'postgres'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
         'HOST': os.environ.get('POSTGRES_HOST', 'pgdb'),
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
+
+
+# Default User Related Model
+
+AUTH_USER_MODEL = 'user.User'
 
 
 # Password validation
