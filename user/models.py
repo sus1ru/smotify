@@ -39,8 +39,12 @@ class UserManager(BaseUserManager):
     use_in_migrations = True
 
     def _create_user_object(self, email, username, password, **extra_fields):
-        if not username:
-            raise ValueError("The given username must be set")
+        if not email:
+            raise ValueError("The given email must be set")
+        
+        if username is None:
+            username = ''
+
         email = self.normalize_email(email)
         # Lookup the real model class from the global app registry so this
         # manager method can be used in migrations. This is fine because
