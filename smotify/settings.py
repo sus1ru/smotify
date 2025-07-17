@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',
     'post',
+    'treebeard',
     'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
