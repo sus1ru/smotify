@@ -15,7 +15,9 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    parent_id = serializers.IntegerField()
+    parent_id = serializers.IntegerField(
+        required=False, allow_null=True, write_only=True
+    )
 
     class Meta:
         model = Comment
@@ -24,7 +26,6 @@ class CommentSerializer(serializers.ModelSerializer):
             "author",
             "post",
             "parent_id",
-            "title",
             "body",
             "upvotes",
             "downvotes",
@@ -35,3 +36,15 @@ class CommentSerializer(serializers.ModelSerializer):
             "title": {"required": True},
             "body": {"required": True},
         }
+
+    def create(self, validated_data):
+        parent_id = validated_data.pop("parent_id", None)
+
+        if parent_id is not None:
+            try:
+                parent = Comment.objects.get(id=parent_id)
+                return parent.add_child(**validated_data)
+            except (Comment.DoesNotExist, ValueError) as e:
+                raise serializers.ValidationError("Error: Parent post doesnot exist!")
+        else:
+            return Comment.add_root(**validated_data)
