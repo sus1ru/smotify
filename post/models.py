@@ -12,6 +12,8 @@ class BaseModel(models.Model):
         blank=True,
         null=True,
     )
+    body = models.TextField(blank=True, null=True)
+    is_deleted = models.BooleanField(default=False, blank=True, null=True)
     upvotes = models.PositiveIntegerField(default=0, blank=True, null=True)
     downvotes = models.PositiveIntegerField(default=0, blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
