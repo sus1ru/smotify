@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Account Activation – Smotify</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            background: #fff;
+            padding: 40px;
+            margin: 100px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #ccc;
+        }
+        h1 {
+            color: {% if status == "success" %}#28a745{% else %}#dc3545{% endif %};
+        }
+        a.button {
+            display: inline-block;
+            margin-top: 20px;
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if status == "success" %}
+            <h1>✅ Account Activated!</h1>
+            <p>Hi {{ username }}, your Smotify account has been successfully activated.</p>
+            <a href="/login/" class="button">Login Now</a>
+        {% else %}
+            <h1>❌ Activation Failed</h1>
+            <p>The activation link is invalid or has expired. Please request a new one.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
