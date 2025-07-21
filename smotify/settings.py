@@ -176,7 +176,7 @@ CELERY_TASK_ROUTES = {
 CELERY_BEAT_SCHEDULE = {
     'fetch-daily-price-data': {
         'task': 'notification.tasks.post',
-        'schedule': crontab(minute=0, hour=*),
+        'schedule': crontab(minute=0, hour="*"),
         'options': {'queue': 'notify'}
     },
 }
