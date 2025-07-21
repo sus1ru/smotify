@@ -50,7 +50,7 @@ services:
     restart: always
     entrypoint: [
         "celery", "--app", "smotify", "worker",
-        "--loglevel=info", "-Q", "default,smotify"
+        "--loglevel=info", "-Q", "default,notify"
       ]
     depends_on:
       - web
