@@ -64,14 +64,14 @@ ROOT_URLCONF = "smotify.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": ["templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -148,38 +148,42 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Redis/Celery settings
 
-REDIS_HOST = os.environ.get('REDIS_HOST', 'redis')
-REDIS_PORT = int(os.environ.get('REDIS_PORT', '6379'))
-REDIS_DB_INDEX = int(os.getenv('REDIS_DB_INDEX', '0'))
-REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
+REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
+REDIS_PORT = int(os.environ.get("REDIS_PORT", "6379"))
+REDIS_DB_INDEX = int(os.getenv("REDIS_DB_INDEX", "0"))
+REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")
 
 REDIS_CLIENT = redis.Redis(
     host=REDIS_HOST,
     port=REDIS_PORT,
     # password=REDIS_PASSWORD,
-    db=REDIS_DB_INDEX
+    db=REDIS_DB_INDEX,
 )
 
-CELERY_DB_INDEX = int(os.environ.get('CELERY_DB_INDEX', '0'))
-CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/{CELERY_DB_INDEX}'
+CELERY_DB_INDEX = int(os.environ.get("CELERY_DB_INDEX", "0"))
+CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{CELERY_DB_INDEX}"
 CELERY_TASK_DEFAULT_QUEUE = "default"
-CELERY_TASK_RESULT_EXPIRES = (7 * 24 * 60 * 60)
+CELERY_TASK_RESULT_EXPIRES = 7 * 24 * 60 * 60
 CELERY_WORKER_SEND_TASK_EVENTS = True
 CELERY_TASK_SEND_SENT_EVENT = True
 CELERY_TRACK_STARTED = True
 CELERY_WORKER_MAX_TASKS_PER_CHILD = 50000
 
 CELERY_TASK_ROUTES = {
-    'notification.tasks.post_process_notification': {'queue': 'notify'},
+    "notification.tasks.post_process_notification": {"queue": "notify"},
 }
 
 CELERY_BEAT_SCHEDULE = {
-    'fetch-daily-price-data': {
-        'task': 'notification.tasks.post',
-        'schedule': crontab(minute=0, hour="*"),
-        'options': {'queue': 'notify'}
+    "fetch-daily-price-data": {
+        "task": "notification.tasks.post",
+        "schedule": crontab(minute=0, hour="*"),
+        "options": {"queue": "notify"},
     },
 }
+
+
+# Other settings
+BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:8050")
 
 
 # Internationalization
