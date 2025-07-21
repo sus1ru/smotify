@@ -36,6 +36,11 @@ def subscribe(request):
         return Response(
             {"Error": "Invalid subscription type"}, status=status.HTTP_400_BAD_REQUEST
         )
+    elif subscribe_type == "user" and object_id == user.id:
+        return Response(
+            {"Error": "User cannot subscribe to themselves"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     try:
         model_alias = subscribe_types.get(subscribe_type)
