@@ -1,0 +1,6 @@
+<div class="notification {% if not is_read %}unread{% endif %}" style="padding: 12px; background: #fff; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 10px 0;">
+    <p>{{ message }}</p>
+    <div style="font-size: 0.85em; color: gray;">
+        {{ date_created|date:"M d, Y H:i" }}
+    </div>
+</div>

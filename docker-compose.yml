@@ -31,6 +31,57 @@ services:
     networks:
       - smotify
 
+  redis:
+    image: redis:alpine
+    restart: always
+    entrypoint: redis-server --appendonly yes
+    # ports:
+    #   - 6379:6379
+    volumes:
+      - ./redis_data:/var/lib/redis
+      - ./redis/rc.local:/etc/rc.local
+    networks:
+      - smotify
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    entrypoint: [
+        "celery", "--app", "smotify", "worker",
+        "--loglevel=info", "-Q", "default,smotify"
+      ]
+    depends_on:
+      - web
+      - redis
+    volumes:
+      - .:/code
+      - ./logs/:/logs/
+    env_file: .env
+    networks:
+      - smotify
+
+  beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    entrypoint: [
+        "celery", "--app", "smotify", "beat",
+        "--loglevel=info", "--scheduler", "django_celery_beat.schedulers:DatabaseScheduler"
+      ]
+    depends_on:
+      - web
+      - redis
+      - worker
+    volumes:
+      - .:/code
+      - ./logs/:/logs/
+    env_file: .env
+    networks:
+      - smotify
+
 networks:
   smotify:
     name: smotify
