@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -63,3 +64,20 @@ class Notification(BaseModel):
 
     title = models.JSONField(blank=True, null=True)
     body = models.JSONField(blank=True, null=True)
+
+    @property
+    def formatted_title(self):
+        return self.title.get("main")
+
+    @property
+    def formatted_body(self):
+        body_template = self.body.get("main")
+        for key, val in self.body.items():
+            model = apps.get_model(val.get("model"))
+            pk = val.get("pk")
+            try:
+                data = getattr(model.objects.get(id=pk), val.get("field"))
+            except model.DoesNotExist as e:
+                continue
+            body_template.replace(key, data)
+        return body_template
